@@ -1,11 +1,13 @@
 using FluentValidation;
 using KooliProjekt.Application.Behaviors;
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection.Metadata;
 
 namespace KooliProjekt.WebAPI
 {
@@ -38,6 +40,7 @@ namespace KooliProjekt.WebAPI
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 config.AddOpenBehavior(typeof(TransactionalBehavior<,>));
             });
+            builder.Services.AddScoped<ILogger, Logger>();
 
             var app = builder.Build();
 
@@ -46,6 +49,13 @@ namespace KooliProjekt.WebAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                using (var scope = app.Services.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    var filler = new DebugDataFiller();
+                    filler.Fill(context);
+                }
             }
 
             app.UseAuthorization();
