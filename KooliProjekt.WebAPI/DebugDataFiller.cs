@@ -66,7 +66,11 @@ namespace KooliProjekt.WebAPI
             if (!context.MedicalRecords.Any())
             {
                 context.MedicalRecords.AddRange(
-                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date, Weight = 75.5m, BloodPressureSystolic = 120, BloodPressureDiastolic = 80, BloodPressurePulse = 70 }
+                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date, Weight = 75.5m, BloodPressureSystolic = 120, BloodPressureDiastolic = 80, BloodPressurePulse = 70 },
+                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date.AddDays(-1), Weight = 75.2m, BloodPressureSystolic = 118, BloodPressureDiastolic = 78, BloodPressurePulse = 68 },
+                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date.AddDays(-2), Weight = 74.8m, BloodPressureSystolic = 122, BloodPressureDiastolic = 82, BloodPressurePulse = 72 },
+                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date.AddDays(-3), Weight = 76.0m, BloodPressureSystolic = 125, BloodPressureDiastolic = 85, BloodPressurePulse = 75 },
+                    new MedicalRecord { PatientId = patient.Id, RecordDate = DateTime.Now.Date.AddDays(-7), Weight = 74.5m, BloodPressureSystolic = 119, BloodPressureDiastolic = 79, BloodPressurePulse = 69 }
                 );
                 context.SaveChanges();
             }

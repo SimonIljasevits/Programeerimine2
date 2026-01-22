@@ -1,4 +1,5 @@
 ﻿using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Infrastructure.Paging;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class ListHealthRecordsQueryHandler : IRequestHandler<ListHealthConsultantsQuery, OperationResult<IList<HealthConsultant>>>
+    public class ListHealthRecordsQueryHandler : IRequestHandler<ListHealthConsultantsQuery, OperationResult<PagedResult<HealthConsultant>>>
     {
         private ApplicationDbContext _dbContext;
 
@@ -19,13 +20,13 @@ namespace KooliProjekt.Application.Features
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult<IList<HealthConsultant>>> Handle(ListHealthConsultantsQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<PagedResult<HealthConsultant>>> Handle(ListHealthConsultantsQuery request, CancellationToken cancellationToken)
         {
-            var result = new OperationResult<IList<HealthConsultant>>();
+            var result = new OperationResult<PagedResult<HealthConsultant>>();
             result.Value = await _dbContext
                 .HealthConsultants
                 .OrderBy(hc => hc.Id)
-                .ToListAsync();
+                .GetPagedAsync<HealthConsultant>(request.Page, request.PageSize);
 
             return result;
         }

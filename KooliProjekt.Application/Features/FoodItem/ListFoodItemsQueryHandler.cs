@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Infrastructure.Paging;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace KooliProjekt.Application.Features
 {
-    public class ListFoodItemsQueryHandler : IRequestHandler<ListFoodItemsQuery, OperationResult<IList<FoodItem>>>
+    public class ListFoodItemsQueryHandler : IRequestHandler<ListFoodItemsQuery, OperationResult<PagedResult<FoodItem>>>
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -18,13 +19,13 @@ namespace KooliProjekt.Application.Features
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult<IList<FoodItem>>> Handle(ListFoodItemsQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<PagedResult<FoodItem>>> Handle(ListFoodItemsQuery request, CancellationToken cancellationToken)
         {
-            var result = new OperationResult<IList<FoodItem>>();
+            var result = new OperationResult<PagedResult<FoodItem>>();
             result.Value = await _dbContext
                 .FoodItems
                 .OrderBy(x => x.Id)
-                .ToListAsync();
+                .GetPagedAsync<FoodItem>(request.Page, request.PageSize);
 
             return result;
         }

@@ -15,9 +15,8 @@ namespace KooliProjekt.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List([FromQuery] ListHealthConsultantsQuery query)
         {
-            var query = new ListHealthConsultantsQuery();
             var healthConsultants = await _mediator.Send(query);
 
             return Result(healthConsultants);
