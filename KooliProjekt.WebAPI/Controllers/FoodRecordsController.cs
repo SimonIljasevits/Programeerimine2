@@ -27,11 +27,6 @@ namespace KooliProjekt.WebAPI.Controllers
         {
             var query = new ListFoodRecordsQuery();
             var result = await _mediator.Send(query);
-            var list = new List<FoodRecordItem>();
-            list.Add(new FoodRecordItem { FoodItemId = 1 });
-            list.Add(new FoodRecordItem { FoodItemId = 2 });
-            list.Add(new FoodRecordItem { FoodItemId = 3 });
-            result.Value.First().FoodRecordItems = list;
 
             return Result(result);
         }
