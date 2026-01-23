@@ -49,19 +49,29 @@ namespace KooliProjekt.WebAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-
-                using (var scope = app.Services.CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                    var filler = new DebugDataFiller();
-                    filler.Fill(context);
-                }
             }
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            // 14.11.2025
+            // Kusi DbContext ja kutsu Migrate meetodi, mis loob 
+            // andmebaasi kui seda pole ja lisab ara puuduvad 
+            // migratsioonid
+            using (var scope = app.Services.CreateScope())
+            using (var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                dbContext.Database.Migrate();
+
+                // 14.11.2025
+                // Andmete genereerimise lubame ainult Debug-reziimis
+#if (DEBUG)
+                var generator = new SeedData(dbContext);
+                generator.Generate();
+#endif
+            }
 
             app.Run();
         }

@@ -19,5 +19,22 @@ namespace KooliProjekt.Application.Data
         public DbSet<FoodItem> FoodItems { get; set; }
         public DbSet<FoodRecord> FoodRecords { get; set; }
         public DbSet<FoodRecordItem> FoodRecordItems { get; set; }
+
+        public bool Any()
+        {
+            if (Patients.Any())
+                return true;
+            if (HealthConsultants.Any())
+                return true;
+            if (MedicalRecords.Any())
+                return true;
+            if (FoodItems.Any())
+                return true;
+            if (FoodRecords.Any())
+                return true;
+            if (FoodRecordItems.Any())
+                return true;
+            return false;
+        }
     }
 }
