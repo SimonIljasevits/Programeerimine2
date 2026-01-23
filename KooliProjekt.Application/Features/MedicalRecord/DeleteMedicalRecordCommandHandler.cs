@@ -1,4 +1,4 @@
-using KooliProjekt.Application.Data;
+﻿using KooliProjekt.Application.Data;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class DeleteHealthConsultantQueryHandler : IRequestHandler<DeleteHealthConsultantQuery, OperationResult>
+    public class DeleteMedicalRecordCommandHandler : IRequestHandler<DeleteMedicalRecordCommand, OperationResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public DeleteHealthConsultantQueryHandler(ApplicationDbContext dbContext)
+        public DeleteMedicalRecordCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult> Handle(DeleteHealthConsultantQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(DeleteMedicalRecordCommand request, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
 
             await _dbContext
-                .HealthConsultants
+                .MedicalRecords
                 .Where(record => record.Id == request.Id)
                 .ExecuteDeleteAsync();
 

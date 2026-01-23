@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SaveFoodRecordItemQueryHandler : IRequestHandler<SaveFoodRecordItemQuery, OperationResult>
+    public class SaveFoodRecordItemCommandHandler : IRequestHandler<SaveFoodRecordItemCommand, OperationResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public SaveFoodRecordItemQueryHandler(ApplicationDbContext dbContext)
+        public SaveFoodRecordItemCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult> Handle(SaveFoodRecordItemQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(SaveFoodRecordItemCommand request, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
             var foodRecordItem = new FoodRecordItem();

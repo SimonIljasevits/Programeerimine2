@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SaveFoodItemQuery : IRequest<OperationResult>, ITransactional
+    public class SaveFoodItemCommand : IRequest<OperationResult>, ITransactional
     {
         public int Id { get; set; }
         public string Name { get; set; }

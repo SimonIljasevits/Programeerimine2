@@ -6,28 +6,30 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SaveHealthConsultantQueryHandler : IRequestHandler<SaveHealthConsultantQuery, OperationResult>
+    public class SavePatientCommandHandler : IRequestHandler<SavePatientCommand, OperationResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public SaveHealthConsultantQueryHandler(ApplicationDbContext dbContext)
+        public SavePatientCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult> Handle(SaveHealthConsultantQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(SavePatientCommand request, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
-            var healthConsultant = new HealthConsultant();
+            var patient = new Patient();
 
             if (request.Id == 0)
             {
-                await _dbContext.AddAsync(healthConsultant);
+                await _dbContext.AddAsync(patient);
             }
             else
             {
-                healthConsultant = await _dbContext.HealthConsultants.FindAsync(request.Id);
+                patient = await _dbContext.Patients.FindAsync(request.Id);
             }
+
+            patient.HealthConsultantId = request.HealthConsultantId;
 
             await _dbContext.SaveChangesAsync();
             return result;

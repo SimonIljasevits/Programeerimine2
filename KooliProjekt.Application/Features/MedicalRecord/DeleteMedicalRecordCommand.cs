@@ -1,4 +1,4 @@
-using KooliProjekt.Application.Infrastructure.Results;
+﻿using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class DeleteFoodRecordQuery : IRequest<OperationResult>
+    public class DeleteMedicalRecordCommand : IRequest<OperationResult>
     {
         public int Id { get; set; }
     }

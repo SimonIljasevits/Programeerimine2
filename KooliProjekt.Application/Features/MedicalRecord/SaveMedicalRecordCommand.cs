@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SaveMedicalRecordQuery : IRequest<OperationResult>, ITransactional
+    public class SaveMedicalRecordCommand : IRequest<OperationResult>, ITransactional
     {
 
         //This will be considered as primary key to find and existing record. In case of creating a new record it will be auto set by the db

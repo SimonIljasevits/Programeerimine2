@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class DeleteHealthConsultantQuery : IRequest<OperationResult>
+    public class DeleteHealthConsultantCommand : IRequest<OperationResult>
     {
         public int Id { get; set; }
     }

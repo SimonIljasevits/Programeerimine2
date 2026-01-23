@@ -46,7 +46,7 @@ namespace KooliProjekt.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        public async Task<IActionResult> Save(SaveFoodRecordQuery query)
+        public async Task<IActionResult> Save(SaveFoodRecordCommand query)
         {
             var response = await _mediator.Send(query);
 
@@ -55,7 +55,7 @@ namespace KooliProjekt.WebAPI.Controllers
 
         [HttpDelete]
         [Route("Delete")]
-        public async Task<IActionResult> Delete(DeleteFoodRecordQuery query)
+        public async Task<IActionResult> Delete(DeleteFoodRecordCommand query)
         {
             var response = await _mediator.Send(query);
 

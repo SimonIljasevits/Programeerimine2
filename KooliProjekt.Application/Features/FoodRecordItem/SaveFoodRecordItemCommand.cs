@@ -7,9 +7,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SavePatientQuery : IRequest<OperationResult>, ITransactional
+    public class SaveFoodRecordItemCommand : IRequest<OperationResult>, ITransactional
     {
         public int Id { get; set; }
-        public int HealthConsultantId { get; set; }
+        public int FoodRecordId { get; set; }
+        public int FoodItemId { get; set; }
+        [Range(1, 10)]
+        public double Quantity { get; set; }
     }
 }

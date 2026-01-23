@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class SaveMedicalRecordQueryHandler : IRequestHandler<SaveMedicalRecordQuery, OperationResult>
+    public class SaveMedicalRecordCommandHandler : IRequestHandler<SaveMedicalRecordCommand, OperationResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public SaveMedicalRecordQueryHandler(ApplicationDbContext dbContext)
+        public SaveMedicalRecordCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult> Handle(SaveMedicalRecordQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(SaveMedicalRecordCommand request, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
             var medicalRecord = new MedicalRecord();

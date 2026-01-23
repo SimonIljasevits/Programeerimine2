@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Features
 {
-    public class DeletePatientQueryHandler : IRequestHandler<DeletePatientQuery, OperationResult>
+    public class DeleteFoodRecordItemCommandHandler : IRequestHandler<DeleteFoodRecordItemCommand, OperationResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public DeletePatientQueryHandler(ApplicationDbContext dbContext)
+        public DeleteFoodRecordItemCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<OperationResult> Handle(DeletePatientQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult> Handle(DeleteFoodRecordItemCommand request, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
 
             await _dbContext
-                .Patients
+                .FoodRecordItems
                 .Where(record => record.Id == request.Id)
                 .ExecuteDeleteAsync();
 
