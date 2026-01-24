@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Data
 {
-    public class FoodRecord
+    public class FoodRecord : Entity
     {
-        public int Id { get; set; }
         [Required]
         public int PatientId { get; set; }
         public Patient Patient { get; set; }

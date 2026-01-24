@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using KooliProjekt.Application.Features;
-using KooliProjekt.Application.Infrastructure.Logging;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

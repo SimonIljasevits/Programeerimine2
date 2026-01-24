@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
-using KooliProjekt.Application.Data;
 using KooliProjekt.Application.Features;
 using KooliProjekt.Application.Infrastructure.Logging;
 using MediatR;

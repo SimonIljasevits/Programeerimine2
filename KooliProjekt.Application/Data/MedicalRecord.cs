@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Data
 {
-    public class MedicalRecord
+    public class MedicalRecord : Entity
     {
-        public int Id { get; set; }
         [Required]
         public int PatientId { get; set; }
         public Patient Patient { get; set; }

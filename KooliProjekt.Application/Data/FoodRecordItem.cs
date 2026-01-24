@@ -2,9 +2,8 @@
 
 namespace KooliProjekt.Application.Data
 {
-    public class FoodRecordItem
+    public class FoodRecordItem : Entity
     {
-        public int Id { get; set; }
         public int FoodRecordId { get; set; }
         public int FoodItemId { get; set; }
         public FoodItem FoodItem { get; set; }

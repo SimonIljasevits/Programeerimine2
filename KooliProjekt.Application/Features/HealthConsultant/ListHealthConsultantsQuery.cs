@@ -2,8 +2,6 @@
 using KooliProjekt.Application.Infrastructure.Paging;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace KooliProjekt.Application.Features
 {
