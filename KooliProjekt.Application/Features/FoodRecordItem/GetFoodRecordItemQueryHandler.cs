@@ -1,28 +1,23 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace KooliProjekt.Application.Features;
 public class GetFoodRecordItemQueryHandler : IRequestHandler<GetFoodRecordItemQuery, OperationResult<object>>
 {
-    private readonly ApplicationDbContext _dbContext;
+    private IFoodRecordItemRepository _foodRecordItemRepository;
 
-    public GetFoodRecordItemQueryHandler(ApplicationDbContext dbContext)
+    public GetFoodRecordItemQueryHandler(IFoodRecordItemRepository foodRecordItemRepository)
     {
-        _dbContext = dbContext;
+        _foodRecordItemRepository = foodRecordItemRepository;
     }
 
     public async Task<OperationResult<object>> Handle(GetFoodRecordItemQuery request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<object>();
-        var foodRecordItem = await _dbContext
-            .FoodRecordItems
-            .Where(f => f.Id == request.Id)
-            .FirstOrDefaultAsync();
+        var foodRecordItem = await _foodRecordItemRepository.GetByIdAsync(request.Id);
         result.Value = foodRecordItem;
 
         return result;

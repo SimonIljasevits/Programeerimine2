@@ -1,6 +1,7 @@
 using FluentValidation;
 using KooliProjekt.Application.Behaviors;
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,13 @@ namespace KooliProjekt.WebAPI
                 config.AddOpenBehavior(typeof(TransactionalBehavior<,>));
             });
             builder.Services.AddScoped<ILogger, Logger>();
+
+            builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+            builder.Services.AddScoped<IHealthConsultantRepository, HealthConsultantRepository>();
+            builder.Services.AddScoped<IFoodItemRepository, FoodItemRepository>();
+            builder.Services.AddScoped<IFoodRecordRepository, FoodRecordRepository>();
+            builder.Services.AddScoped<IFoodRecordItemRepository, FoodRecordItemRepository>();
 
             var app = builder.Build();
 

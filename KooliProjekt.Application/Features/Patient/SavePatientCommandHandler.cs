@@ -1,4 +1,5 @@
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using System.Threading;
@@ -8,11 +9,11 @@ namespace KooliProjekt.Application.Features
 {
     public class SavePatientCommandHandler : IRequestHandler<SavePatientCommand, OperationResult>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IPatientRepository _patientRepository;
 
-        public SavePatientCommandHandler(ApplicationDbContext dbContext)
+        public SavePatientCommandHandler(IPatientRepository patientRepository)
         {
-            _dbContext = dbContext;
+            _patientRepository = patientRepository;
         }
 
         public async Task<OperationResult> Handle(SavePatientCommand request, CancellationToken cancellationToken)
@@ -20,18 +21,14 @@ namespace KooliProjekt.Application.Features
             var result = new OperationResult();
             var patient = new Patient();
 
-            if (request.Id == 0)
+            if (request.Id != 0)
             {
-                await _dbContext.AddAsync(patient);
-            }
-            else
-            {
-                patient = await _dbContext.Patients.FindAsync(request.Id);
+                patient = await _patientRepository.GetByIdAsync(request.Id);
             }
 
             patient.HealthConsultantId = request.HealthConsultantId;
 
-            await _dbContext.SaveChangesAsync();
+            await _patientRepository.SaveAsync(patient);
             return result;
         }
     }

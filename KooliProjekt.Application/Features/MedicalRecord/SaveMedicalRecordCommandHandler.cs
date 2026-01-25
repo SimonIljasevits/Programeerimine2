@@ -1,4 +1,5 @@
 ﻿using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using System.Threading;
@@ -8,11 +9,11 @@ namespace KooliProjekt.Application.Features
 {
     public class SaveMedicalRecordCommandHandler : IRequestHandler<SaveMedicalRecordCommand, OperationResult>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IMedicalRecordRepository _medicalRecordRepository;
 
-        public SaveMedicalRecordCommandHandler(ApplicationDbContext dbContext)
+        public SaveMedicalRecordCommandHandler(IMedicalRecordRepository medicalRecordRepository)
         {
-            _dbContext = dbContext;
+            _medicalRecordRepository = medicalRecordRepository;
         }
 
         public async Task<OperationResult> Handle(SaveMedicalRecordCommand request, CancellationToken cancellationToken)
@@ -20,13 +21,9 @@ namespace KooliProjekt.Application.Features
             var result = new OperationResult();
             var medicalRecord = new MedicalRecord();
 
-            if (request.Id == 0)
+            if (request.Id != 0)
             {
-                await _dbContext.AddAsync(medicalRecord);
-            }
-            else {
-
-                medicalRecord = await _dbContext.MedicalRecords.FindAsync(request.Id);
+                medicalRecord = await _medicalRecordRepository.GetByIdAsync(request.Id);
             }
 
             medicalRecord.PatientId = request.PatientId;
@@ -37,7 +34,7 @@ namespace KooliProjekt.Application.Features
             medicalRecord.BloodPressureSystolic = request.BloodPressureSystolic;
             medicalRecord.BloodPressurePulse = request.BloodPressurePulse;
 
-            await _dbContext.SaveChangesAsync();
+            await _medicalRecordRepository.SaveAsync(medicalRecord);
             return result;
         }
     }

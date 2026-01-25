@@ -1,4 +1,5 @@
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using System.Threading;
@@ -8,11 +9,11 @@ namespace KooliProjekt.Application.Features
 {
     public class SaveFoodRecordItemCommandHandler : IRequestHandler<SaveFoodRecordItemCommand, OperationResult>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IFoodRecordItemRepository _foodRecordItemRepository;
 
-        public SaveFoodRecordItemCommandHandler(ApplicationDbContext dbContext)
+        public SaveFoodRecordItemCommandHandler(IFoodRecordItemRepository foodRecordItemRepository)
         {
-            _dbContext = dbContext;
+            _foodRecordItemRepository = foodRecordItemRepository;
         }
 
         public async Task<OperationResult> Handle(SaveFoodRecordItemCommand request, CancellationToken cancellationToken)
@@ -20,20 +21,16 @@ namespace KooliProjekt.Application.Features
             var result = new OperationResult();
             var foodRecordItem = new FoodRecordItem();
 
-            if (request.Id == 0)
+            if (request.Id != 0)
             {
-                await _dbContext.AddAsync(foodRecordItem);
-            }
-            else
-            {
-                foodRecordItem = await _dbContext.FoodRecordItems.FindAsync(request.Id);
+                foodRecordItem = await _foodRecordItemRepository.GetByIdAsync(request.Id);
             }
 
             foodRecordItem.FoodRecordId = request.FoodRecordId;
             foodRecordItem.FoodItemId = request.FoodItemId;
             foodRecordItem.Quantity = request.Quantity;
 
-            await _dbContext.SaveChangesAsync();
+            await _foodRecordItemRepository.SaveAsync(foodRecordItem);
             return result;
         }
     }

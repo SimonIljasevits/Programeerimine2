@@ -1,28 +1,23 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace KooliProjekt.Application.Features;
 public class GetPatientQueryHandler : IRequestHandler<GetPatientQuery, OperationResult<object>>
 {
-    private readonly ApplicationDbContext _dbContext;
+    private IPatientRepository _patientRepository;
 
-    public GetPatientQueryHandler(ApplicationDbContext dbContext)
+    public GetPatientQueryHandler(IPatientRepository patientRepository)
     {
-        _dbContext = dbContext;
+        _patientRepository = patientRepository;
     }
 
     public async Task<OperationResult<object>> Handle(GetPatientQuery request, CancellationToken cancellationToken)
     {
         var result = new OperationResult<object>();
-        var patient = await _dbContext
-            .Patients
-            .Where(p => p.Id == request.Id)
-            .FirstOrDefaultAsync();
+        var patient = await _patientRepository.GetByIdAsync(request.Id);
         result.Value = patient;
 
         return result;

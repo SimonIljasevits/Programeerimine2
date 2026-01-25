@@ -1,4 +1,5 @@
 using KooliProjekt.Application.Data;
+using KooliProjekt.Application.Data.Repositories;
 using KooliProjekt.Application.Infrastructure.Results;
 using MediatR;
 using System.Threading;
@@ -8,11 +9,11 @@ namespace KooliProjekt.Application.Features
 {
     public class SaveFoodRecordCommandHandler : IRequestHandler<SaveFoodRecordCommand, OperationResult>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IFoodRecordRepository _foodRecordRepository;
 
-        public SaveFoodRecordCommandHandler(ApplicationDbContext dbContext)
+        public SaveFoodRecordCommandHandler(IFoodRecordRepository foodRecordRepository)
         {
-            _dbContext = dbContext;
+            _foodRecordRepository = foodRecordRepository;
         }
 
         public async Task<OperationResult> Handle(SaveFoodRecordCommand request, CancellationToken cancellationToken)
@@ -20,20 +21,16 @@ namespace KooliProjekt.Application.Features
             var result = new OperationResult();
             var foodRecord = new FoodRecord();
 
-            if (request.Id == 0)
+            if (request.Id != 0)
             {
-                await _dbContext.AddAsync(foodRecord);
-            }
-            else
-            {
-                foodRecord = await _dbContext.FoodRecords.FindAsync(request.Id);
+                foodRecord = await _foodRecordRepository.GetByIdAsync(request.Id);
             }
 
             foodRecord.PatientId = request.PatientId;
             foodRecord.RecordDate = request.RecordDate;
             foodRecord.MealType = request.MealType;
 
-            await _dbContext.SaveChangesAsync();
+            await _foodRecordRepository.SaveAsync(foodRecord);
             return result;
         }
     }
